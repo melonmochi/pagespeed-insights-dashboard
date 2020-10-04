@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Checkbox as AntCheckbox } from 'antd';
 import { CheckboxGroupProps } from 'antd/lib/checkbox';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import './categories-group.less';
+import './categories.less';
 
 const options = [
   { label: 'Performance', value: 'performance' },
