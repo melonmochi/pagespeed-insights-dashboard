@@ -18,7 +18,7 @@ const getInsights = ({
   const categoriesQueryParameters = categories.map((cat) => `category=${cat}`).join('&');
   const insightsUrl = `${insightsHost}?key=${key}&url=${url}${
     categoriesQueryParameters ? '&' : ''
-  }${categoriesQueryParameters}&${strategy}`;
+  }${categoriesQueryParameters}&strategy=${strategy}`;
   return insightsUrl;
 };
 
