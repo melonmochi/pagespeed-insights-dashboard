@@ -1,4 +1,4 @@
-## 0.1.2 (2020-10-04)
+## 0.1.3 (2020-10-04)
 
 ### Bug Fixes
 
@@ -7,4 +7,5 @@
 
 ### Features
 
+- add apiKey field ([576d24a](https://github.com/melonmochi/pagespeed-insights-dashboard/commit/576d24a4259a9f3cc1b95065eb31b1fe8c73c85f))
 - add yarn.lock ([4a34c2a](https://github.com/melonmochi/pagespeed-insights-dashboard/commit/4a34c2a31f52a27372c9317b9c61e836be844815))
