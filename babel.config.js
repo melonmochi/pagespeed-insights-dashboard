@@ -1,12 +1,32 @@
-// babel.config.js
-module.exports = function configBabel(api) {
+const environmentPreset = [
+  '@babel/preset-env',
+  {
+    useBuiltIns: 'usage',
+    corejs: 3,
+    modules: false,
+  },
+];
+
+module.exports = (api) => {
   api.cache(true);
-
-  const presets = ['@babel/preset-typescript'];
-  const plugins = [];
-
   return {
-    presets,
-    plugins,
+    presets: [
+      environmentPreset,
+      '@babel/preset-typescript',
+      [
+        '@babel/preset-react',
+        {
+          development: process.env.BABEL_ENV === 'development',
+          runtime: 'automatic',
+          plugins: [
+            process.env.BABEL_ENV === 'production' &&
+              '@babel/plugin-transform-react-constant-elements',
+            process.env.BABEL_ENV === 'production' &&
+              '@babel/plugin-transform-react-inline-elements',
+          ].filter(Boolean),
+        },
+      ],
+    ],
+    plugins: [['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }]],
   };
 };
