@@ -1,6 +1,6 @@
 {
   "name": "pagespeed-insights-dashboard",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -87,7 +87,7 @@
   },
   "scripts": {
     "build": "TS_NODE_PROJECT=\"configs/webpack/webpack.tsconfig.json\" webpack --config configs/webpack/webpack.production.ts",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "lint": "yarn run lint-eslint && yarn run lint-stylelint",
     "lint-eslint": "eslint -c .eslintrc.js --ext .ts,.tsx,.js {src,scripts}/**/*.{ts,tsx,js}",
     "lint-stylelint": "stylelint src/**/*.less --syntax less",
