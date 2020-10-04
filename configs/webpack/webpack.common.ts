@@ -4,7 +4,7 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
-import * as dotenv from 'dotenv';
+import Dotenv from 'dotenv-webpack';
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const baseDirection = path.resolve(__dirname, '../..');
@@ -89,9 +89,7 @@ const commonConfig: webpack.Configuration = {
     },
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify(dotenv.config().parsed), // it will automatically pick up key values from .env file
-    }),
+    new Dotenv() as webpack.WebpackPluginInstance,
     new MiniCssExtractPlugin() as webpack.WebpackPluginInstance,
     new HtmlWebpackPlugin({
       favicon: './public/favicon.ico',

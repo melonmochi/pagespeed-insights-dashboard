@@ -18,18 +18,23 @@ const defaultCategories = ['performance'] as CheckboxValueType[];
 const Input: FC = () => {
   const [shouldFetch, setShouldFetch] = useState<boolean>(false);
   const [url, setUrl] = useState<string>('');
+  const [apiKey, setApiKey] = useState<string>('');
   const [categories, setCategories] = useState<CheckboxValueType[]>(defaultCategories);
   const [results, setResults] = useState<any[]>([]);
 
   const onSuccess = (data: any, key: string) => {
-    setResults([...results, { ...data, key }]);
+    if (data.id) setResults([...results, { ...data, key }]);
   };
-  const { isValidating } = useSWR(shouldFetch ? getInsights({ url, categories }) : null, {
+  const { isValidating } = useSWR(shouldFetch ? getInsights({ url, categories, apiKey }) : null, {
     onSuccess,
   });
 
   const categoriesOnChange: CheckboxGroupProps['onChange'] = (checkedValues) => {
     setCategories(checkedValues);
+  };
+
+  const apiKeyOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setApiKey(e.target.value);
   };
 
   const onSearch: SearchProps['onSearch'] = (value) => {
@@ -52,6 +57,7 @@ const Input: FC = () => {
         placeholder="Enter a webpage URL"
         loading={isValidating}
       />
+      <AntInput className="input" onChange={apiKeyOnChange} placeholder="Enter an apiKey" />
       <CategoriesGroup defaultValue={defaultCategories} onChange={categoriesOnChange} />
       <Result results={results} />
     </>
