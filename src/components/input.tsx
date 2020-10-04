@@ -33,6 +33,7 @@ const Input: FC = () => {
     shouldFetch ? getInsights({ url, apiKey, strategy, categories }) : null,
     {
       onSuccess,
+      refreshInterval: 1000,
     },
   );
 
