@@ -1,6 +1,6 @@
 {
   "name": "pagespeed-insights-dashboard",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -39,7 +39,6 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.21.3",
     "eslint-plugin-react-hooks": "^4.1.2",
-    "eslint-plugin-unicorn": "^22.0.0",
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.5.0",
     "husky": "^4.3.0",
@@ -78,7 +77,7 @@
       "eslint -c .eslintrc.js"
     ],
     "*.{css,less,scss}": [
-      "stylelint --config .stylelintrc.json"
+      "stylelint --config .stylelintrc"
     ],
     "*.{ts,tsx,js,json,html,yml,css,less,scss,md}": [
       "prettier --write ."
@@ -89,13 +88,15 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "lint": "yarn run lint-eslint && yarn run lint-stylelint",
     "lint-eslint": "eslint -c .eslintrc.js --ext .ts,.tsx,.js {src,scripts}/**/*.{ts,tsx,js}",
-    "lint-stylelint": "stylelint --config .stylelintrc.json src/**/*.scss --syntax scss",
+    "lint-stylelint": "stylelint src/**/*.less --syntax less",
     "prettier": "prettier --write .",
     "start": "TS_NODE_PROJECT=\"configs/webpack/webpack.tsconfig.json\" webpack-dev-server --open --config configs/webpack/webpack.development.ts"
   },
   "dependencies": {
     "antd": "^4.6.6",
+    "dotenv": "^8.2.0",
     "react": "^17.0.0-rc.2",
-    "react-dom": "^17.0.0-rc.2"
+    "react-dom": "^17.0.0-rc.2",
+    "swr": "^0.3.5"
   }
 }

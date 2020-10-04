@@ -1,9 +1,14 @@
 import { FC, StrictMode } from 'react';
-import { Button } from 'antd';
+import { Layout } from 'antd';
+import { Body, Header } from '@/layouts';
+import './app.less';
 
 const App: FC = () => (
   <StrictMode>
-    <Button type="primary">Test1</Button>
+    <Layout className="layout">
+      <Header />
+      <Body />
+    </Layout>
   </StrictMode>
 );
 

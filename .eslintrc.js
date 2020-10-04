@@ -12,7 +12,6 @@ module.exports = {
     'plugin:eslint-comments/recommended',
     'plugin:promise/recommended',
     'plugin:react/recommended',
-    'plugin:unicorn/recommended',
     'prettier',
     'prettier/@typescript-eslint',
     'prettier/react',
@@ -41,6 +40,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'no-use-before-define': 'off',
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
+    'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
   },
   settings: {
