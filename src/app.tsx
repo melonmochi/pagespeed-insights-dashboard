@@ -1,14 +1,18 @@
 import { FC, StrictMode } from 'react';
 import { Layout } from 'antd';
-import { Body, Header } from '@/layouts';
+import { Body, Footer, Header } from '@/layouts';
 import './app.less';
+import { GlobalContextProvider } from './contexts';
 
 const App: FC = () => (
   <StrictMode>
-    <Layout className="layout">
-      <Header />
-      <Body />
-    </Layout>
+    <GlobalContextProvider>
+      <Layout className="layout">
+        <Header />
+        <Body />
+        <Footer />
+      </Layout>
+    </GlobalContextProvider>
   </StrictMode>
 );
 

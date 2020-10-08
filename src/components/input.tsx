@@ -1,46 +1,49 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, useState, useEffect } from 'react';
-import { Input as AntInput } from 'antd';
+import { FC, useState, useContext } from 'react';
+import { Button, Input as AntInput, Select } from 'antd';
+import { PauseOutlined } from '@ant-design/icons';
 import { CheckboxGroupProps } from 'antd/lib/checkbox';
 import { SearchProps } from 'antd/lib/input';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import useSWR from 'swr';
-import { getInsights } from '@/api';
-import CategoriesGroup from './categories-group';
+import { GlobalContext } from '@/contexts';
+import { VersionsGroup, CategoriesGroup, PSI } from '@/components';
 import './input.less';
-import Result from './result';
 
 const { Search } = AntInput;
+const { Option } = Select;
 
 const defaultCategories = ['performance'] as CheckboxValueType[];
 
 const Input: FC = () => {
+  const {
+    state: { versions },
+  } = useContext(GlobalContext);
   const [shouldFetch, setShouldFetch] = useState<boolean>(false);
   const [url, setUrl] = useState<string>('');
   const [categories, setCategories] = useState<CheckboxValueType[]>(defaultCategories);
-  const [results, setResults] = useState<any[]>([]);
 
-  const onSuccess = (data: any, key: string) => {
-    setResults([...results, { ...data, key }]);
+  const onPause = () => {
+    setShouldFetch(false);
   };
-  const { isValidating } = useSWR(shouldFetch ? getInsights({ url, categories }) : null, {
-    onSuccess,
-  });
 
   const categoriesOnChange: CheckboxGroupProps['onChange'] = (checkedValues) => {
     setCategories(checkedValues);
   };
 
-  const onSearch: SearchProps['onSearch'] = (value) => {
-    setUrl(value);
+  const onSearch: SearchProps['onSearch'] = () => {
+    setShouldFetch(true);
   };
 
-  useEffect(() => {
-    if (url) {
-      setShouldFetch(true);
-    }
-  }, [url]);
+  const onChange: SearchProps['onChange'] = (e) => {
+    setUrl(e.target.value);
+  };
+
+  const outputTypesSelector = (
+    <Select defaultValue="default" disabled>
+      <Option value="default">default</Option>
+    </Select>
+  );
 
   return (
     <>
@@ -48,12 +51,35 @@ const Input: FC = () => {
         className="input"
         enterButton="Analyze"
         size="large"
+        onChange={onChange}
         onSearch={onSearch}
         placeholder="Enter a webpage URL"
-        loading={isValidating}
+        loading={shouldFetch}
+        addonAfter={
+          <Button
+            disabled={!shouldFetch}
+            key="pause-button"
+            style={{ marginLeft: 10, marginRight: 10 }}
+            shape="circle"
+            icon={<PauseOutlined />}
+            onClick={onPause}
+          />
+        }
       />
+      <VersionsGroup />
       <CategoriesGroup defaultValue={defaultCategories} onChange={categoriesOnChange} />
-      <Result results={results} />
+      <div className="selectors">
+        <div className="output-types">output type: {outputTypesSelector}</div>
+      </div>
+      {versions.map((version) => (
+        <PSI
+          key={version}
+          version={version}
+          categories={categories}
+          shouldFetch={shouldFetch}
+          url={url}
+        />
+      ))}
     </>
   );
 };

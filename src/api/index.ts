@@ -1,17 +1,30 @@
-import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import { GetInsightsProperties } from '@/typings';
 
-interface GetInsightsProperties {
-  url?: string;
-  categories?: CheckboxValueType[];
-}
+const isValidUrl = (url?: string) => {
+  if (!url) return false;
+  try {
+    // eslint-disable-next-line no-new
+    new URL(url);
+  } catch (_) {
+    return false;
+  }
 
-const getInsights = ({ url, categories = [] }: GetInsightsProperties): string => {
+  return true;
+};
+
+const getInsights = ({ url, categories = [], version }: GetInsightsProperties): string => {
   const insightsHost = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-  const categoriesQueryParameters = categories.map((cat) => `category=${cat}`).join('&');
-  const insightsUrl = `${insightsHost}?key=${process.env.PSI_API_KEY}&url=${url}${
-    categoriesQueryParameters ? '&' : ''
-  }${categoriesQueryParameters}`;
-  return insightsUrl;
+
+  if (isValidUrl(url)) {
+    const categoriesQueryParameters = categories.map((cat) => `category=${cat}`).join('&');
+    const urlParams = new URL(url || '')?.searchParams;
+    const hasParams = Object.keys(urlParams).length > 0;
+    const insightsUrls = `${insightsHost}?key=${process.env.PSI_API_KEY}&url=${url}${
+      version && version !== 'main' ? `${hasParams ? '&' : '?'}d=${version}` : ''
+    }${categoriesQueryParameters ? '&' : ''}${categoriesQueryParameters}`;
+    return insightsUrls;
+  }
+  return '';
 };
 
 // eslint-disable-next-line import/prefer-default-export

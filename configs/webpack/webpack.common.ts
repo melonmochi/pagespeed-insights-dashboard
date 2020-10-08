@@ -5,7 +5,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import * as dotenv from 'dotenv';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const baseDirection = path.resolve(__dirname, '../..');
 
@@ -98,7 +98,7 @@ const commonConfig: webpack.Configuration = {
       template: './public/index.html',
       title: 'PageSpeed Insights Dashboard',
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 };
 

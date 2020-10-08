@@ -10,6 +10,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:eslint-comments/recommended',
+    'plugin:import/typescript',
     'plugin:promise/recommended',
     'plugin:react/recommended',
     'prettier',
@@ -37,7 +38,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
-    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/no-extraneous-dependencies': 'off',
     'no-use-before-define': 'off',
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/prop-types': 'off',
@@ -46,6 +47,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
+        paths: ['src'],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
       typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
