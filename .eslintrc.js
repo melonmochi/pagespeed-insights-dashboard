@@ -28,6 +28,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react'],
   rules: {
     '@typescript-eslint/no-use-before-define': 'warn',
+    'default-case': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',

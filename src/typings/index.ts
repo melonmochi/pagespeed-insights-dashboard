@@ -2,24 +2,25 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 
 type Versions = string[];
 
-interface GlobalActionI {
-  CHANGE_VERSIONS_GROUP: { type: 'CHANGE_VERSIONS_GROUP'; payload: Versions };
+export interface PageAction {
+  CHANGE_VERSIONS: { type: 'CHANGE_VERSIONS'; payload: Versions };
 }
 
-type GlobalAction = GlobalActionI['CHANGE_VERSIONS_GROUP'];
+type PageActionType = PageAction['CHANGE_VERSIONS'];
 
-interface GlobalStateI {
+interface PageState {
   versions: Versions;
 }
 
-export interface GlobalInterface {
-  Action: GlobalAction;
-  State: GlobalStateI;
-  Dispatch: (a: GlobalAction) => void;
+export interface PageInterface {
+  Action: PageActionType;
+  State: PageState;
+  Dispatch: (a: PageActionType) => void;
 }
 
 export interface GetInsightsProperties {
-  url?: string;
   categories?: CheckboxValueType[];
-  version?: string;
+  strategy?: string;
+  url?: string;
+  version: string;
 }

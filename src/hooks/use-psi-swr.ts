@@ -8,14 +8,21 @@ interface usePsiSWRProps extends PSIProps {
 
 const usePsiSWR = ({
   url,
+  strategy,
   categories,
   version,
   onSuccess,
   shouldFetch,
 }: usePsiSWRProps): boolean => {
-  const { isValidating } = useSWR(shouldFetch ? getInsights({ url, categories, version }) : null, {
-    onSuccess,
-  });
+  const { isValidating } = useSWR(
+    () => (shouldFetch ? getInsights({ url, strategy, categories, version }) : null),
+    {
+      onSuccess,
+      refreshInterval: 1000,
+      refreshWhenHidden: true,
+      refreshWhenOffline: true,
+    },
+  );
 
   return isValidating;
 };

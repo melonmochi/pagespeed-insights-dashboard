@@ -1,3 +1,4 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable import/no-cycle */
 export * from './reducers';
-// eslint-disable-next-line import/no-cycle
 export * from './stores';

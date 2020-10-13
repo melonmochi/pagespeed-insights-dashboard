@@ -1,63 +1,69 @@
-/* eslint-disable eslint-comments/disable-enable-pair */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useState, useContext } from 'react';
-import { Button, Input as AntInput, Select } from 'antd';
+import { Button, Input as AntInput, InputNumber, Typography } from 'antd';
 import { PauseOutlined } from '@ant-design/icons';
 import { CheckboxGroupProps } from 'antd/lib/checkbox';
 import { SearchProps } from 'antd/lib/input';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import { GlobalContext } from '@/contexts';
-import { VersionsGroup, CategoriesGroup, PSI } from '@/components';
+import { RadioChangeEvent } from 'antd/lib/radio';
+import { InputNumberProps } from 'antd/lib/input-number';
+import { PageContext } from '@/contexts';
+import { VersionsGroup, Categories, PSI, Strategies } from '@/components';
 import './input.less';
 
 const { Search } = AntInput;
-const { Option } = Select;
+const { Text } = Typography;
 
-const defaultCategories = ['performance'] as CheckboxValueType[];
+const defaultCategories = ['performance'];
+const defaultStrategy = 'mobile';
 
 const Input: FC = () => {
   const {
     state: { versions },
-  } = useContext(GlobalContext);
-  const [shouldFetch, setShouldFetch] = useState<boolean>(false);
+  } = useContext(PageContext);
   const [url, setUrl] = useState<string>('');
+  const [strategy, setStrategy] = useState<string>(defaultStrategy);
   const [categories, setCategories] = useState<CheckboxValueType[]>(defaultCategories);
+  const [pollingNum, setPollingNum] = useState<number>(10);
+  const [isPaused, setIsPaused] = useState(true);
+
+  const onSearch: SearchProps['onSearch'] = () => {
+    setIsPaused(false);
+  };
 
   const onPause = () => {
-    setShouldFetch(false);
+    setIsPaused(true);
   };
 
   const categoriesOnChange: CheckboxGroupProps['onChange'] = (checkedValues) => {
     setCategories(checkedValues);
   };
 
-  const onSearch: SearchProps['onSearch'] = () => {
-    setShouldFetch(true);
+  const strategyOnChange: (e: RadioChangeEvent) => void = (e) => {
+    setStrategy(e.target.value);
   };
 
   const onChange: SearchProps['onChange'] = (e) => {
     setUrl(e.target.value);
   };
 
-  const outputTypesSelector = (
-    <Select defaultValue="default" disabled>
-      <Option value="default">default</Option>
-    </Select>
-  );
+  const onChangePolling: InputNumberProps['onChange'] = (value) => {
+    setPollingNum(Number(value));
+  };
 
   return (
     <>
       <Search
         className="input"
+        disabled={!isPaused}
         enterButton="Analyze"
         size="large"
         onChange={onChange}
         onSearch={onSearch}
         placeholder="Enter a webpage URL"
-        loading={shouldFetch}
+        loading={!isPaused}
         addonAfter={
           <Button
-            disabled={!shouldFetch}
+            disabled={isPaused}
             key="pause-button"
             style={{ marginLeft: 10, marginRight: 10 }}
             shape="circle"
@@ -66,18 +72,28 @@ const Input: FC = () => {
           />
         }
       />
+      <Strategies defaultValue={defaultStrategy} onChange={strategyOnChange} />
+      <Text type="secondary">Categories: </Text>
+      <Categories defaultValue={defaultCategories} onChange={categoriesOnChange} />
+      <Text type="secondary">Versions: </Text>
       <VersionsGroup />
-      <CategoriesGroup defaultValue={defaultCategories} onChange={categoriesOnChange} />
-      <div className="selectors">
-        <div className="output-types">output type: {outputTypesSelector}</div>
-      </div>
+      <Text type="secondary">Nº of polling: </Text>
+      <InputNumber
+        size="small"
+        min={1}
+        max={99}
+        defaultValue={pollingNum}
+        onChange={onChangePolling}
+      />
       {versions.map((version) => (
         <PSI
-          key={version}
-          version={version}
           categories={categories}
-          shouldFetch={shouldFetch}
+          key={version}
+          pollingNum={pollingNum}
+          shouldFetch={!isPaused}
+          strategy={strategy}
           url={url}
+          version={version}
         />
       ))}
     </>

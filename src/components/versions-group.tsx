@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState, ChangeEvent, useContext } from 'react';
 import { Tag, Input, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { GlobalContext } from '@/contexts';
+import { PageContext } from '@/contexts';
 import { ColorTag } from '@/components';
 import './versions-group.less';
 
@@ -14,10 +14,10 @@ interface VersionsGroupState {
 }
 
 const VersionsGroup: FC = () => {
-  const { state: globalState, dispatch } = useContext(GlobalContext);
-  const { versions: globalVersions } = globalState;
+  const { state: pageState, dispatch } = useContext(PageContext);
+  const { versions: pageVersions } = pageState;
   const defaultState: VersionsGroupState = {
-    tags: globalVersions,
+    tags: pageVersions,
     inputVisible: false,
     inputValue: '',
     editInputIndex: -1,
@@ -30,8 +30,12 @@ const VersionsGroup: FC = () => {
   const { tags, inputVisible, inputValue, editInputIndex, editInputValue } = state;
 
   useEffect(() => {
-    dispatch({ type: 'CHANGE_VERSIONS_GROUP', payload: tags });
-  }, [dispatch, tags]);
+    dispatch({
+      type: 'CHANGE_VERSIONS',
+      payload: tags,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tags]);
 
   const handleClose = (removedTag: string) => {
     setState({ ...state, tags: tags.filter((tag) => tag !== removedTag) });

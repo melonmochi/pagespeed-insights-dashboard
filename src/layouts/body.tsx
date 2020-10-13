@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { Layout } from 'antd';
-import { Input } from '@/components';
+import { Pages } from '@/components';
 import './body.less';
 
 const { Content } = Layout;
 
 const Body: FC = () => (
   <Content className="layout-body">
-    <Input />
+    <Pages />
   </Content>
 );
 
