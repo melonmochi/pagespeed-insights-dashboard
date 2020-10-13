@@ -19,7 +19,7 @@ const getInsights = ({
   version = '',
 }: GetInsightsProperties): string => {
   const insightsHost = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-  // const key = (process && process.env && process.env.PSI_API_KEY) || apiKey || '';
+  const key = (process && process.env && process.env.PSI_API_KEY) || '';
   if (isValidUrl(url)) {
     const categoriesQueryParameters = categories.map((cat) => `category=${cat}`).join('&');
     const hasParams = url && url.split('?')[1];
@@ -27,7 +27,9 @@ const getInsights = ({
       `${url}${version && version !== 'main' ? `${hasParams ? '&' : '?'}d=${version}` : ''}`,
     );
     const categoriesParam = categoriesQueryParameters ? `&${categoriesQueryParameters}` : '';
-    const insightsUrls = `${insightsHost}?url=${urlParam}${categoriesParam}&strategy=${strategy}`;
+    const insightsUrls = `${insightsHost}?url=${urlParam}${categoriesParam}${
+      key ? `&key=${key}` : ''
+    }&strategy=${strategy}`;
     return insightsUrls;
   }
   return '';
